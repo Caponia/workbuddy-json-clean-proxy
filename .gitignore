@@ -1,0 +1,8 @@
+# Python
+__pycache__/
+*.py[cod]
+*.log
+
+# 本机配置（含真实 API Key / 上游地址，不得提交）
+models.json
+*.conf
