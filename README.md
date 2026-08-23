@@ -90,6 +90,12 @@ Server Detail: "Invalid request: invalid JSON request body"
 - **非流式**：完整转发
 - 上游不可达 → 返回 502 JSON 错误（不挂死）
 
+### 代理环境隔离（重要）
+
+代理**内部强制禁用系统代理环境变量**（`HTTP_PROXY` / `HTTPS_PROXY` / `NO_PROXY`），始终直连上游。否则在配置了 Clash/FlClash 等本地代理的机器上，`urllib` 会把上游私网地址（如 `10.66.66.1`）错误地交给 `127.0.0.1:7890` 代理转发，导致 `502 upstream error: [WinError 10054]`。
+
+> 排查提示：若出现 502，先确认 ① 上游服务可达（`curl --noproxy "*"` 直连测试）② WireGuard/VPN 隧道服务处于 Running 状态。本代理的 502 仅表示"上游不可达"，与本地代理无关。
+
 ## 部署
 
 ### 1. 启动代理
